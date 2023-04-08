@@ -5,7 +5,7 @@ let handleLogin = async (req, res) => {
     if (!email || !password) {
         return res.status(500).json({
             errCode: 1,
-            message: 'loi'
+            message: 'chua nhap du thong tin'
         })
     }
     let userData = await userSevice.handleUserLogin(email, password)
@@ -16,6 +16,25 @@ let handleLogin = async (req, res) => {
     })
 }
 
+let handleGetAllUsers = async (req, res) => {
+    let id = req.body.id;
+    if (!id) {
+        return res.status(200).json({
+            errCode: 1,
+            errMessage: 'loi',
+            users: []
+        })
+    }
+    let users = await userSevice.getAllUsers(id);
+    console.log(users);
+    return res.status(200).json({
+        errCode: 0,
+        errMessage: 'ok',
+        users
+    })
+}
+
 module.exports = {
-    handleLogin: handleLogin
+    handleLogin: handleLogin,
+    handleGetAllUsers: handleGetAllUsers
 }

@@ -8,8 +8,9 @@ let initWebRoutes = (app) => {
     router.get('/about', homeController.getAboutPage);
     router.get('/product', homeController.getProductPage);
     router.get('/crud', homeController.getCRUD);
-    router.post('/api/login', userController.handleLogin)
+    router.post('/api/login', userController.handleLogin);
     router.post('/post-crud', homeController.postCRUD);
+    router.get('/api/get-all-users', userController.handleGetAllUsers);
     return app.use("/", router);
 }
 
