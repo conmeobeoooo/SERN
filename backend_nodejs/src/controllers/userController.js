@@ -17,7 +17,7 @@ let handleLogin = async (req, res) => {
 }
 
 let handleGetAllUsers = async (req, res) => {
-    let id = req.body.id;
+    let id = req.query.id;
     if (!id) {
         return res.status(200).json({
             errCode: 1,
@@ -34,7 +34,31 @@ let handleGetAllUsers = async (req, res) => {
     })
 }
 
+let handleCreateNewUser = async (req, res) => {
+    let message = await userSevice.createNewUser(req.body)
+    return res.status(200).json(message)
+}
+
+let handleDeleteUser = async (req, res) => {
+    if (!req.body.id) {
+        return res.status(200).json({
+            errCode: 1,
+            errMessage: 'hay truyen id'
+        })
+    }
+    let message = await userSevice.deleteUser(req.body.id)
+    return res.status(200).json(message)
+}
+
+let handleEditUser = async (req, res) => {
+    let data = req.body
+    let message = await userSevice.editUser(data)
+    return res.status(200).json(message)
+}
 module.exports = {
     handleLogin: handleLogin,
-    handleGetAllUsers: handleGetAllUsers
+    handleGetAllUsers: handleGetAllUsers,
+    handleCreateNewUser: handleCreateNewUser,
+    handleDeleteUser: handleDeleteUser,
+    handleEditUser: handleEditUser
 }
