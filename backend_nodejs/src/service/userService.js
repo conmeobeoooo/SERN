@@ -20,13 +20,12 @@ let handleUserLogin = (email, password) => {
                     if (check) {
                         userData.errCode = 0;
                         userData.errMessage = 'ok';
-                        console.log(user)
                         delete user.password;
                         userData.user = user;
                     }
                     else {
                         userData.errCode = 3;
-                        userData.errMessage = 'Wrong password'
+                        userData.errMessage = 'sai tai khoan hoac mat khau'
                     }
                 }
                 else {
@@ -36,7 +35,7 @@ let handleUserLogin = (email, password) => {
             }
             else {
                 userData.errCode = 1;
-                userData.errMessage = `your email isn't in your system `,
+                userData.errMessage = `sai tai khoan hoac mat khau `,
                     resolve(userData)
             }
             resolve(userData)

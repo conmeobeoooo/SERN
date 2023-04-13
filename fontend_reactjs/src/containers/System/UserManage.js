@@ -1,16 +1,21 @@
 import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
-import { getAllUsers, createNewUserService } from '../../services/userSevice'
+import { getAllUsers, createNewUserService, deleteUser, editUserService } from '../../services/userSevice'
 import './UserManage.scss'
 import ModalUser from './ModalUser';
+import ModalEditUser from './ModalEditUser';
+import { emitter } from '../../utils/emitter';
+import { Alert } from 'reactstrap';
 class UserManage extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
             arrUsers: [],
-            isOpenModal: false
+            isOpenModal: false,
+            isOpenEditModal: false,
+            userEdit: {}
         }
     }
 
@@ -49,11 +54,52 @@ class UserManage extends Component {
                 this.setState({
                     isOpenModal: false
                 })
+                emitter.emit('EVENT_CLEAR_MODAL_DATA')
             }
         } catch (e) {
             console.log(e);
         }
-        console.log('check data', data);
+    }
+
+    handleDeleteUser = async (user) => {
+        try {
+            let res = await deleteUser(user.id)
+            if (res && res.errCode === 0) {
+                await this.getAllUsersFromReact()
+            }
+        } catch (e) {
+            alert('error message', e)
+        }
+    }
+
+    handleEditUser = (user) => {
+        this.setState({
+            isOpenEditModal: true,
+            userEdit: user
+        })
+    }
+
+    toggleEditUserModal = (user) => {
+        this.setState({
+            isOpenEditModal: !this.state.isOpenEditModal,
+        })
+    }
+
+    doEditUser = async (user) => {
+        try {
+            let res = await editUserService(user)
+            if (res && res.errCode === 0) {
+                this.setState({
+                    isOpenEditModal: false
+                })
+                this.getAllUsersFromReact()
+            }
+            else {
+                alert(res.errCode)
+            }
+        } catch (e) {
+            console.log(e);
+        }
     }
 
     render() {
@@ -65,6 +111,14 @@ class UserManage extends Component {
                     toggleFromParent={this.toggleUserModal}
                     createNewUser={this.createNewUser}
                 />
+                {this.state.isOpenEditModal &&
+                    <ModalEditUser
+                        isOpen={this.state.isOpenEditModal}
+                        toggleFromParent={this.toggleEditUserModal}
+                        currentUser={this.state.userEdit}
+                        editUser={this.doEditUser}
+                    />
+                }
                 <div className='text-center title'>Manage user</div>
                 <div className="user-table mt-4 mx-4">
                     <div className='mb-2'>
@@ -74,7 +128,6 @@ class UserManage extends Component {
                     </div>
                     <table id="customers" className='text-center'>
                         <tr>
-                            <th>ID</th>
                             <th>Email</th>
                             <th>First Name</th>
                             <th>Last Name</th>
@@ -86,17 +139,16 @@ class UserManage extends Component {
                             arrUsers && arrUsers.map((user, index) => {
                                 return (
                                     <tr className='' key={index}>
-                                        <td>{user.id}</td>
                                         <td>{user.email}</td>
                                         <td>{user.firstName}</td>
                                         <td>{user.lastName}</td>
                                         <td>{user.phonenumber}</td>
                                         <td>{user.address}</td>
                                         <td>
-                                            <button className='btn-edit'><i className="fa-solid fa-user-pen"></i></button>
+                                            <button onClick={() => this.handleEditUser(user)} className='btn-edit'><i className="fa-solid fa-user-pen"></i></button>
                                         </td>
                                         <td>
-                                            <button className='btn-delete'><i className="fa-solid fa-trash"></i></button>
+                                            <button onClick={() => this.handleDeleteUser(user)} className='btn-delete'><i className="fa-solid fa-trash"></i></button>
                                         </td>
                                     </tr>
                                 )
