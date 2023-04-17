@@ -1,4 +1,17 @@
 {
+    "homeheader": {
+        "speciality": "Chuyên khoa",
+        "searchdoctor": "Tìm bác sĩ theo chuyên khoa",
+        "health-facilities": "Cơ sở y tế",
+        "choose-hospital-clinic": "Chọn bệnh viện phòng khám",
+        "doctor": "Bác sĩ",
+        "choose-a-good-doctor": "Chọn bác sĩ giỏi",
+        "examination-package": "Gói khám",
+        "general-health-check": "Khám sức khỏe tổng quát",
+        "support": "Hỗ trợ",
+        "medical-background": "NỀN TẢNG Y TẾ",
+        "comprehensive-health-care": "CHĂM SÓC SỨC KHỎE TOÀN DIỆN"
+    },
     "common": {
         "add": "Thêm",
         "edit": "Sửa",

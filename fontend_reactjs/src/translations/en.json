@@ -1,4 +1,17 @@
 {
+    "homeheader": {
+        "speciality": "Medical speciality",
+        "searchdoctor": "Find a doctor by specialty",
+        "health-facilities": "Health facilities",
+        "choose-hospital-clinic": "Choose hospital clinic",
+        "doctor": "Dsoctor",
+        "choose-a-good-doctor": "Choose a good doctor",
+        "examination-package": "Examination package",
+        "general-health-check": "General health check",
+        "support": "Support",
+        "medical-background": "MEDICAL BACKGROUND",
+        "comprehensive-health-care": "COMPREHENSIVE HEALTH CARE"
+    },
     "common": {
         "add": "Add",
         "edit": "Edit",

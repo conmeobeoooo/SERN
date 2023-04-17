@@ -31,10 +31,7 @@
 }
 
 
-.App{
-  width: 1200px;
-  margin: 0 auto;
-}
+
 
 .btn-edit, 
 .btn-add,
@@ -88,7 +85,9 @@
     -webkit-box-shadow: 2px 2px 4px 0 $box-shadow-color;
   }
 }
-
+a{
+  text-decoration: none;
+}
 .modal {
   .modal-dialog {
     .modal-content {

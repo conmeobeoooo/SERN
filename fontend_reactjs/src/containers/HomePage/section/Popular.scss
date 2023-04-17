@@ -1,0 +1,59 @@
+.section-popular{
+    height: 360px;
+    background: #f5f5f5;
+    margin-top: 40px;
+}
+
+.slick-prev{
+    font-size: 40px !important;
+}
+
+.popular-content{
+    width: 1170px;
+    margin: 0 auto;
+    padding-left: 15px;
+    .popular-header{
+        position: relative;
+        width: 100%;
+        display: flex;
+        padding: 40px 0;
+        .popular-header-title{
+            color: #333;
+            margin: 0;
+            font-weight: 560;
+            line-height: 40px;
+        }
+        .popular-header-btn{
+            position: absolute;
+            background-color: #ebebeb;
+            padding: 10px 15px;
+            color: #333;
+            border: 1px solid transparent;
+            border-radius: 3px;
+            outline: none;
+            right: 18px;
+            font-size: 13px;
+        }
+    }
+    .popular-items{
+    .popular-item{
+        width: 278px;
+        margin: 5px;
+        .popular-item-img{
+            width: 100%;
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            object-fit: cover;
+            background-color: #eee;
+            height: 156px;
+        }
+       
+        .popular-item-title{
+            margin-top: 10px;
+            color: #333;
+            font-size: 14px;
+        }
+}}
+}
+
