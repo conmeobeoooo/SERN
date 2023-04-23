@@ -4,6 +4,9 @@ import { connect } from 'react-redux';
 import HomeHeader from './HomeHeader';
 import Specialty from './section/Specialty';
 import Popular from './section/Popular';
+import Doctor from './section/Doctor';
+import DownApp from './section/DownApp';
+import Footer from './section/Footer';
 class HomePage extends Component {
 
     render() {
@@ -13,7 +16,9 @@ class HomePage extends Component {
                     <HomeHeader />
                     <Specialty />
                     <Popular />
-                    <div style={{ height: '400px' }}></div>
+                    <Doctor />
+                    <DownApp />
+                    <Footer />
                 </div>
             </div>
         );

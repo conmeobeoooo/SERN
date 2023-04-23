@@ -11,7 +11,7 @@ let handleUserLogin = (email, password) => {
             let isExist = await checkUserEmail(email)
             if (isExist) {
                 let user = await db.User.findOne({
-                    attributes: ['email', 'roleId', 'password'],
+                    attributes: ['email', 'roleId', 'password', 'firstName', 'lastName'],
                     where: { email: email },
                     raw: true
                 })
@@ -35,10 +35,33 @@ let handleUserLogin = (email, password) => {
             }
             else {
                 userData.errCode = 1;
-                userData.errMessage = `sai tai khoan hoac mat khau `,
+                userData.errMessage = 'sai tai khoan hoac mat khau',
                     resolve(userData)
             }
             resolve(userData)
+        } catch (e) {
+            reject(e)
+        }
+    })
+}
+
+let getAllCodeService = (typeInput) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!typeInput) {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Hay truyen vao tham so!'
+                })
+            } else {
+                let res = {}
+                let allcode = await db.Allcode.findAll({
+                    where: { type: typeInput }
+                })
+                res.errCode = 0
+                res.data = allcode
+                resolve(res)
+            }
         } catch (e) {
             reject(e)
         }
@@ -199,5 +222,6 @@ module.exports = {
     getAllUsers: getAllUsers,
     createNewUser: createNewUser,
     deleteUser: deleteUser,
-    editUser: editUser
+    editUser: editUser,
+    getAllCodeService: getAllCodeService
 }

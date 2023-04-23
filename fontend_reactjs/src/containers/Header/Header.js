@@ -9,8 +9,7 @@ import './Header.scss';
 class Header extends Component {
 
     render() {
-        const { processLogout } = this.props;
-
+        const { processLogout, userInfo } = this.props;
         return (
             <div className="header-container">
                 {/* thanh navigator */}
@@ -19,7 +18,8 @@ class Header extends Component {
                 </div>
 
                 {/* nút logout */}
-                <div className="btn btn-logout" onClick={processLogout}>
+                <div className="btn btn-logout" onClick={processLogout} title="logout">
+                    <span className='welcome'>{userInfo && userInfo.firstName ? "Welcome " + userInfo.firstName : ''}</span>
                     <i className="fas fa-sign-out-alt"></i>
                 </div>
             </div>
@@ -30,7 +30,8 @@ class Header extends Component {
 
 const mapStateToProps = state => {
     return {
-        isLoggedIn: state.user.isLoggedIn
+        isLoggedIn: state.user.isLoggedIn,
+        userInfo: state.user.userInfo
     };
 };
 

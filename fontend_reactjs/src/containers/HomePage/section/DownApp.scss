@@ -1,0 +1,63 @@
+.section-downapp{
+    height: 378px;
+    background: #f5f5f5;
+}
+
+
+
+.downapp-content{
+    padding: 40px 15px;
+    margin: 0 auto;
+    padding-left: 15px;
+    .downapp{
+        background-image: url('https://bookingcare.vn/assets/anh/bookingcare-app-2020.png');
+        background-repeat: no-repeat;
+        object-fit: cover;
+        height: 300px;
+        background-position-x: 700px;
+        padding-left: 920px;
+        .downapp-title{
+            padding-top: 30px;
+            color: #333;
+            font-size: 25px;
+            font-weight: 510;
+            margin-bottom: 10px;
+        }
+        .app-feature{
+            li:before{
+            content: "";
+            position: absolute;
+            height: 7px;
+            width: 13px;
+            top: 9px;
+            left: -24px;
+            border: 2px solid #45c3d2;
+            border-right: none;
+            border-top: none;
+            -webkit-transform: rotate(-45deg);
+            transform: rotate(-45deg);
+            }
+            li{
+                list-style: none;
+                font-size: 14px;
+                color: #333;
+                line-height: 30px;
+                position: relative;
+            }
+        }
+        .downapp-link{
+            margin-bottom: 15px;
+            display: flex;
+            gap: 10px;
+            .downapp-link-img{
+                height: 40px;
+            }
+        }
+        .downapp-link-auto{
+            color: #45c3d2;
+            font-style: italic;
+            font-size: 13px;
+        }
+    }
+}
+
