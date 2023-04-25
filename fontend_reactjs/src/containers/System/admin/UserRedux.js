@@ -2,32 +2,60 @@ import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { getAllCodeService } from '../../../services/userSevice';
+import * as actions from "../../../store/actions"
+import './UserRedux.scss'
 class UserRedux extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            genderArr: []
+            genderArr: [],
+            positionArr: [],
+            roleArr: [],
+            previewImg: ''
         }
     }
 
     async componentDidMount() {
-        try {
-            let res = await getAllCodeService('gender')
-            if (res && res.errCode === 0) {
-                this.setState({
-                    genderArr: res.data
-                })
-            }
-        } catch (e) {
-            console.log(e);
+        this.props.getGenderStart()
+        this.props.getPositionStart()
+        this.props.getRoleStart()
+    }
+
+    componentDidUpdate(pervProps, prevState, snapshot) {
+        if (pervProps.genderRedux !== this.props.genderRedux) {
+            this.setState({
+                genderArr: this.props.genderRedux
+            })
+        }
+        if (pervProps.positionRedux !== this.props.positionRedux) {
+            this.setState({
+                positionArr: this.props.positionRedux
+            })
+        }
+        if (pervProps.roleRedux !== this.props.roleRedux) {
+            this.setState({
+                roleArr: this.props.roleRedux
+            })
         }
     }
 
-
+    handleOnChangeImage = (e) => {
+        let data = e.target.files
+        let file = data[0]
+        if (file) {
+            let objectUrl = URL.createObjectURL(file)
+            this.setState({
+                previewImg: objectUrl
+            })
+        }
+    }
     render() {
-        console.log('check state', this.state);
+        console.log('check poprs', this.state);
         let genders = this.state.genderArr
+        let positions = this.state.positionArr
+        let roles = this.state.roleArr
+        let loadingGender = this.props.isLoadingGender
         return (
             <div className="users-container">
 
@@ -39,6 +67,7 @@ class UserRedux extends Component {
                 </div>
                 <div className="container">
                     <h1 className='title col-12'>Thêm mới người dùng</h1>
+                    <div>{loadingGender === true ? 'loading gender' : ''}</div>
                     <div className="row">
                         <div className="col-6 mb-4">
                             <label htmlFor="">Email</label>
@@ -67,7 +96,7 @@ class UserRedux extends Component {
                         <div className="col-3 mb-4">
                             <label htmlFor="">Gender</label>
 
-                            <select id="inputState" class="form-control">
+                            <select id="inputState" class="form-select">
                                 {genders && genders.length > 0 &&
                                     genders.map((item, index) => {
                                         return (
@@ -78,21 +107,38 @@ class UserRedux extends Component {
                         </div>
                         <div className="col-3 mb-4">
                             <label htmlFor="">RoleID</label>
-                            <select id="inputState" class="form-control">
-                                <option selected>Choose...</option>
-                                <option>...</option>
+                            <select id="inputState" class="form-select">
+                                {roles && roles.length > 0 &&
+                                    roles.map((item, index) => {
+                                        return (
+                                            <option key={index}>{item.valueVi}</option>
+                                        )
+                                    })}
                             </select>
                         </div>
                         <div className="col-3 mb-4">
                             <label htmlFor="">Position</label>
-                            <select id="inputState" class="form-control">
-                                <option selected>Choose...</option>
-                                <option>...</option>
+                            <select id="inputState" class="form-select">
+                                {positions && positions.length > 0 &&
+                                    positions.map((item, index) => {
+                                        return (
+                                            <option key={index}>{item.valueVi}</option>
+                                        )
+                                    })}
                             </select>
                         </div>
-                        <div className="col-3 mb-5">
-                            <label htmlFor="">Image</label>
-                            <input type="text" className='form-control' />
+                        <div className="col-3 upload-avatar">
+                            <label htmlFor="">Ảnh đại diện</label>
+                            <div>
+                                <input type="file" id='previewImg' hidden
+                                    onChange={(e) => this.handleOnChangeImage(e)}
+                                />
+                                <label className='btn-upload' htmlFor="previewImg">Tải ảnh <i className='fa fa-upload'></i> </label>
+                                <div className="previewAvatar"
+                                    style={{ backgroundImage: `url(${this.state.previewImg})` }}
+                                >
+                                </div>
+                            </div>
                         </div>
                         <div className='col-12 text-center'>
                             <button className='btn btn-primary px-4' type='submit'>Thêm</button>
@@ -107,12 +153,19 @@ class UserRedux extends Component {
 
 const mapStateToProps = state => {
     return {
+        genderRedux: state.admin.genders,
+        isLoadingGender: state.admin.isLoadingGender,
+        positionRedux: state.admin.positions,
+        roleRedux: state.admin.roles,
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-
+        getGenderStart: () => dispatch(actions.fetchGenderStart()),
+        getPositionStart: () => dispatch(actions.fetchPositionStart()),
+        getRoleStart: () => dispatch(actions.fetchRoleStart())
+        // processLogout: () => dispatch(actions.processLogout()),
     };
 };
 
