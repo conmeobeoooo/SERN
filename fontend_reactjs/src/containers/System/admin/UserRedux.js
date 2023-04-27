@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { getAllCodeService } from '../../../services/userSevice';
 import * as actions from "../../../store/actions"
 import './UserRedux.scss'
+import TableReduxUser from './TableReduxUser';
 class UserRedux extends Component {
 
     constructor(props) {
@@ -12,7 +13,17 @@ class UserRedux extends Component {
             genderArr: [],
             positionArr: [],
             roleArr: [],
-            previewImg: ''
+            previewImg: '',
+            email: '',
+            password: '',
+            firstName: '',
+            lastName: '',
+            phonenumber: '',
+            address: '',
+            gender: '',
+            position: '',
+            role: '',
+            avatar: '',
         }
     }
 
@@ -24,18 +35,38 @@ class UserRedux extends Component {
 
     componentDidUpdate(pervProps, prevState, snapshot) {
         if (pervProps.genderRedux !== this.props.genderRedux) {
+            let arrGenders = this.props.genderRedux
             this.setState({
-                genderArr: this.props.genderRedux
+                genderArr: arrGenders,
+                gender: arrGenders && arrGenders.length > 0 ? arrGenders[0].key : ''
             })
         }
         if (pervProps.positionRedux !== this.props.positionRedux) {
+            let arrPositions = this.props.positionRedux
             this.setState({
-                positionArr: this.props.positionRedux
+                positionArr: arrPositions,
+                position: arrPositions && arrPositions.length > 0 ? arrPositions[0].key : ''
             })
         }
         if (pervProps.roleRedux !== this.props.roleRedux) {
+            let arrRole = this.props.roleRedux
             this.setState({
-                roleArr: this.props.roleRedux
+                roleArr: arrRole,
+                role: arrRole && arrRole.length > 0 ? arrRole[0].key : ''
+            })
+        }
+        if (pervProps.listUsers !== this.props.listUsers) {
+            this.setState({
+                email: '',
+                password: '',
+                firstName: '',
+                lastName: '',
+                phonenumber: '',
+                address: '',
+                gender: '',
+                position: '',
+                role: '',
+                avatar: '',
             })
         }
     }
@@ -46,68 +77,133 @@ class UserRedux extends Component {
         if (file) {
             let objectUrl = URL.createObjectURL(file)
             this.setState({
-                previewImg: objectUrl
+                previewImg: objectUrl,
+                avatar: file
             })
         }
     }
+
+    handleAddNewUser = () => {
+        let isValid = this.checkValidateInput()
+        if (isValid === false) return;
+        this.setState({
+            ...this.state,
+            isUserCreate: false
+        })
+
+        // fire redux action
+        this.props.createNewUser({
+            email: this.state.email,
+            password: this.state.password,
+            firstName: this.state.firstName,
+            lastName: this.state.lastName,
+            address: this.state.address,
+            phonenumber: this.state.phonenumber,
+            gender: this.state.gender,
+            roleId: this.state.role,
+            positionId: this.state.position,
+        })
+        setTimeout(() => {
+            this.props.fetchUserRedux()
+        }, 1000)
+    }
+
+    checkValidateInput = () => {
+        let isValid = true
+        let arrCheck = ['email', 'password', 'firstName', 'lastName', 'phonenumber', 'address']
+        for (let i = 0; i < arrCheck.length; i++) {
+            if (!this.state[arrCheck[i]]) {
+                isValid = false;
+                alert('hãy nhập ' + arrCheck[i]);
+                break
+            }
+        }
+        return isValid
+    }
+
+    onChangeInput = (e, id) => {
+        let copyState = { ...this.state }
+
+        copyState[id] = e.target.value
+        this.setState({
+            ...copyState
+        })
+    }
     render() {
-        console.log('check poprs', this.state);
         let genders = this.state.genderArr
         let positions = this.state.positionArr
         let roles = this.state.roleArr
         let loadingGender = this.props.isLoadingGender
+        let { email, password, firstName, lastName, phonenumber, address, gender, position, role, avatar } = this.state;
         return (
             <div className="users-container">
-
-                <div className="user-table mt-4 mx-4">
-                    <div className='mb-2'>
-                        <button className='btn btn-primary px-4'
-                        ><i className="fa-regular fa-plus"></i>Add new user</button>
-                    </div>
-                </div>
                 <div className="container">
                     <h1 className='title col-12'>Thêm mới người dùng</h1>
                     <div>{loadingGender === true ? 'loading gender' : ''}</div>
                     <div className="row">
                         <div className="col-6 mb-4">
                             <label htmlFor="">Email</label>
-                            <input className="form-control" type="email" />
+                            <input className="form-control" type="email"
+                                value={email}
+                                onChange={(e) => { this.onChangeInput(e, "email") }}
+                            />
                         </div>
                         <div className="col-6 mb-4">
                             <label htmlFor="">Password</label>
-                            <input className="form-control" type="password" />
+                            <input className="form-control" type="password"
+                                value={password}
+                                onChange={(e) => this.onChangeInput(e, "password")}
+                            />
                         </div>
                         <div className="col-6 mb-4">
                             <label htmlFor="">firstName</label>
-                            <input className="form-control" type="text" />
+                            <input className="form-control" type="text"
+                                value={firstName}
+                                onChange={(e) => this.onChangeInput(e, "firstName")}
+                            />
                         </div>
                         <div className="col-6 mb-4">
                             <label htmlFor="">lastName</label>
-                            <input className="form-control" type="text" />
+                            <input className="form-control" type="text"
+                                value={lastName}
+                                onChange={(e) => this.onChangeInput(e, "lastName")}
+                            />
                         </div>
                         <div className="col-6 mb-4">
-                            <label htmlFor="">Phonenumber</label>
-                            <input className="form-control" type="text" />
+                            <label htmlFor="">phonenumber</label>
+                            <input className="form-control" type="text"
+                                value={phonenumber}
+                                onChange={(e) => this.onChangeInput(e, "phonenumber")}
+                            />
                         </div>
                         <div className="col-6 mb-4">
                             <label htmlFor="">Address</label>
-                            <input className="form-control" type="text" />
+                            <input className="form-control" type="text"
+                                value={address}
+                                onChange={(e) => this.onChangeInput(e, "address")}
+                            />
                         </div>
                         <div className="col-3 mb-4">
-                            <label htmlFor="">Gender</label>
+                            <label htmlFor="">gender</label>
 
-                            <select id="inputState" class="form-select">
+                            <select id="inputState" class="form-select"
+                                value={gender}
+                                onChange={(e) => this.onChangeInput(e, "gender")}
+                            >
                                 {genders && genders.length > 0 &&
                                     genders.map((item, index) => {
                                         return (
-                                            <option key={index}>{item.valueVi}</option>
+                                            <option value={item.key} key={index}>{item.valueVi}</option>
                                         )
                                     })}
                             </select>
                         </div>
                         <div className="col-3 mb-4">
                             <label htmlFor="">RoleID</label>
-                            <select id="inputState" class="form-select">
+                            <select id="inputState" class="form-select"
+                                value={role}
+                                onChange={(e) => this.onChangeInput(e, "role")}
+                            >
                                 {roles && roles.length > 0 &&
                                     roles.map((item, index) => {
                                         return (
@@ -118,7 +214,10 @@ class UserRedux extends Component {
                         </div>
                         <div className="col-3 mb-4">
                             <label htmlFor="">Position</label>
-                            <select id="inputState" class="form-select">
+                            <select id="inputState" class="form-select"
+                                value={position}
+                                onChange={(e) => this.onChangeInput(e, "position")}
+                            >
                                 {positions && positions.length > 0 &&
                                     positions.map((item, index) => {
                                         return (
@@ -141,9 +240,10 @@ class UserRedux extends Component {
                             </div>
                         </div>
                         <div className='col-12 text-center'>
-                            <button className='btn btn-primary px-4' type='submit'>Thêm</button>
+                            <button onClick={() => this.handleAddNewUser()} className='btn btn-primary px-4' type='submit'>Thêm</button>
                         </div>
                     </div>
+                    <TableReduxUser className="mb-5" />
                 </div>
             </div>
         )
@@ -157,6 +257,7 @@ const mapStateToProps = state => {
         isLoadingGender: state.admin.isLoadingGender,
         positionRedux: state.admin.positions,
         roleRedux: state.admin.roles,
+        listUsers: state.admin.users
     };
 };
 
@@ -164,8 +265,11 @@ const mapDispatchToProps = dispatch => {
     return {
         getGenderStart: () => dispatch(actions.fetchGenderStart()),
         getPositionStart: () => dispatch(actions.fetchPositionStart()),
-        getRoleStart: () => dispatch(actions.fetchRoleStart())
+        getRoleStart: () => dispatch(actions.fetchRoleStart()),
+        createNewUser: (data) => dispatch(actions.createNewUser(data)),
         // processLogout: () => dispatch(actions.processLogout()),
+        fetchUserRedux: () => dispatch(actions.fetchAllUserStart())
+
     };
 };
 

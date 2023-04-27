@@ -1,5 +1,6 @@
 import actionTypes from './actionTypes';
-import { getAllCodeService } from '../../services/userSevice';
+import { getAllCodeService, createNewUserService, getAllUsers, deleteUser } from '../../services/userSevice';
+import { toast } from "react-toastify";
 
 // export const fetchGenderStart = () => ({
 //     type: actionTypes.FETCH_GENDER_START
@@ -87,3 +88,89 @@ export const fetchRoleStart = () => {
         }
     }
 }
+
+export const createNewUser = (data) => {
+    return async (dispatch, getState) => {
+        try {
+            let res = await createNewUserService(data)
+            if (res && res.errCode === 0) {
+                dispatch(saveUserSuccess())
+                toast.success("Tạo mới người dùng thành công");
+                dispatch(fetchAllUserStart())
+            }
+            else {
+                dispatch(saveUserFailed())
+                toast.error("lỗi");
+            }
+        } catch (e) {
+            toast.error("lỗi");
+            dispatch(fetchRoleFailed())
+            console.log('error', e);
+        }
+    }
+}
+
+export const saveUserSuccess = () => ({
+    type: 'CREATE_USER_SUCCESS'
+})
+
+export const saveUserFailed = () => ({
+    type: 'CREATE_USER_FAILED'
+})
+
+export const fetchAllUserStart = () => {
+    return async (dispatch, getState) => {
+        try {
+
+            let res = await getAllUsers('ALL')
+            if (res && res.errCode === 0) {
+                dispatch(fetchAllUserSuccess(res.users.reverse()))
+            }
+            else {
+                dispatch(fetchAllUserFailed())
+            }
+        } catch (e) {
+            dispatch(fetchRoleFailed())
+            console.log('error', e);
+        }
+    }
+}
+
+export const fetchAllUserSuccess = (data) => ({
+    type: 'FETCH_ALL_USER_SUCCESS',
+    users: data
+})
+
+export const fetchAllUserFailed = () => ({
+    type: 'FETCH_ALL_USER_FAILED'
+})
+
+export const deleteAUser = (userId) => {
+    return async (dispatch, getState) => {
+        try {
+            let res = await deleteUser(userId)
+            if (res && res.errCode === 0) {
+                dispatch(deleteUserSeccess())
+                toast.success("Xóa người dùng thành công");
+                dispatch(fetchAllUserStart())
+            }
+            else {
+                dispatch(deleteUserFailed())
+                toast.error("lỗi");
+            }
+        } catch (e) {
+            toast.error("lỗi");
+            dispatch(fetchRoleFailed())
+            console.log('error', e);
+        }
+    }
+}
+
+export const deleteUserSeccess = () => ({
+    type: actionTypes.DELETE_USER_SUCCESS,
+
+})
+
+export const deleteUserFailed = () => ({
+    type: actionTypes.DELETE_USER_FAILED
+})
