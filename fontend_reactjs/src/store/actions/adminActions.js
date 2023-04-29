@@ -1,5 +1,5 @@
 import actionTypes from './actionTypes';
-import { getAllCodeService, createNewUserService, getAllUsers, deleteUser } from '../../services/userSevice';
+import { getAllCodeService, createNewUserService, getAllUsers, deleteUser, editUserService } from '../../services/userSevice';
 import { toast } from "react-toastify";
 
 // export const fetchGenderStart = () => ({
@@ -100,11 +100,11 @@ export const createNewUser = (data) => {
             }
             else {
                 dispatch(saveUserFailed())
-                toast.error("lỗi");
+                toast.error("lỗi thêm người dùng hoặc email đã tồn tại");
             }
         } catch (e) {
-            toast.error("lỗi");
-            dispatch(fetchRoleFailed())
+            toast.error('loi');
+            dispatch(saveUserFailed())
             console.log('error', e);
         }
     }
@@ -160,7 +160,7 @@ export const deleteAUser = (userId) => {
             }
         } catch (e) {
             toast.error("lỗi");
-            dispatch(fetchRoleFailed())
+            dispatch(deleteUserFailed())
             console.log('error', e);
         }
     }
@@ -171,6 +171,38 @@ export const deleteUserSeccess = () => ({
 
 })
 
+
 export const deleteUserFailed = () => ({
     type: actionTypes.DELETE_USER_FAILED
+})
+
+export const editUser = (data) => {
+    return async (dispatch, getState) => {
+        try {
+            let res = await editUserService(data)
+            if (res && res.errCode === 0) {
+                dispatch(editUserSeccess())
+                toast.success("Sửa người dùng thành công");
+                dispatch(fetchAllUserStart())
+            }
+            else {
+                dispatch(editUserFailed())
+                toast.error("lỗi");
+            }
+        } catch (e) {
+            toast.error("lỗi");
+            dispatch(editUserFailed())
+            console.log('error', e);
+        }
+    }
+}
+
+export const editUserSeccess = () => ({
+    type: actionTypes.EDIT_USER_SUCCESS
+
+})
+
+
+export const editUserFailed = () => ({
+    type: actionTypes.EDIT_USER_FAILED
 })

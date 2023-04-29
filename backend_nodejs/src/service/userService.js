@@ -185,7 +185,7 @@ let deleteUser = (userId) => {
 let editUser = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
-            if (!data.id) {
+            if (!data.id || data.roleId || data.positionId || data.gender) {
                 resolve({
                     errCode: 0,
                     errMessage: 'hay truyen vao id'
@@ -199,7 +199,10 @@ let editUser = (data) => {
                 user.firstName = data.firstName;
                 user.lastName = data.lastName;
                 user.address = data.address;
-                user.phonenumber = data.phonenumber
+                user.phonenumber = data.phonenumber;
+                user.positionId = data.positionId;
+                user.gender = data.gender;
+                user.roleId = data.roleId;
                 await user.save()
 
                 resolve({

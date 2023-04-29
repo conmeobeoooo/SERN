@@ -24,12 +24,12 @@ class Popular extends Component {
                     </div>
                     <Slider {...settings}>
                         <div className='d-flex popular-items'>
-                            <a href="#">
+                            <div href="#">
                                 <div className='popular-item'>
                                     <img className='popular-item-img' src="https://cdn.bookingcare.vn/fr/w300/2019/12/13/120331-co-xuong-khop.jpg" alt="" />
                                     <h3 className='popular-item-title'>Cơ Xương Khớp</h3>
                                 </div>
-                            </a>
+                            </div>
                             <div className='popular-item'>
                                 <a href="#">
                                     <img className='popular-item-img' src="https://cdn.bookingcare.vn/fr/w300/2019/12/13/121042-than-kinh.jpg" alt="" />

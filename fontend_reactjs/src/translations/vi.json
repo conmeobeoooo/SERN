@@ -57,5 +57,9 @@
             "handbook": "Cẩm nang",
             "manage-handbook": "Quản lý cẩm nang"
         }
+    },
+    "manage-user": {
+        "edit": "Sửa thông tin",
+        "save": "Thêm người dùng"
     }
 }

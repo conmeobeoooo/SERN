@@ -25,11 +25,15 @@ class UserManage extends Component {
 
     handleDeleteUser(user) {
         this.props.deleteAUserRedux(user.id)
+        console.log(user);
+    }
+
+    handleEditUser(user) {
+        this.props.handleEditUserFromParent(user)
+        console.log(user);
     }
 
     render() {
-        console.log('check list user', this.props.listUsers);
-        console.log('check check state', this.state.userRedux);
         let arrUser = this.state.userRedux
         return (
             <div className="users-container">
@@ -57,7 +61,9 @@ class UserManage extends Component {
                                     <td>{user.roleId}</td>
                                     <td>{user.positionId}</td>
                                     <td>
-                                        <button className='btn-edit'><i className="fa-solid fa-user-pen"></i></button>
+                                        <button
+                                            onClick={() => this.handleEditUser(user)}
+                                            className='btn-edit'><i className="fa-solid fa-user-pen"></i></button>
                                     </td>
                                     <td>
                                         <button className='btn-delete'
